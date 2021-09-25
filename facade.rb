@@ -24,6 +24,7 @@ class Facade
 
     COMPONENT_CONFIGS.each do |plugin, cnfs|
       require_relative "components/#{plugin.downcase}"
+      # Dependency injection system
       configs_arg = [c.get(plugin.downcase)]
       cnfs ? cnfs.each { |param| configs_arg.push(c.get(param)) } : nil
       Object.const_get(plugin).new(*configs_arg)

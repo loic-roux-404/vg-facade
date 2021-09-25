@@ -5,8 +5,8 @@ class ::Hash
 		self.merge(second, &merger)
 	end
 
-	def to_struct
-		Struct.new(*keys.map(&:to_sym)).new(*values.to_struct)
+  def to_struct
+		!values.empty? ? Struct.new(*keys.map(&:to_sym)).new(*values.to_struct) : {}
 	end
 end
 
