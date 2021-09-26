@@ -12,7 +12,7 @@ class Network < Component
   end
 
   def network_public
-    network_private
+    network_private(3)
     # Automatic interfaces
     preferred_interfaces = ['eth0.*', 'eth\d.*', 'enp0s.*', 'enp\ds.*', 'en0.*', 'en\d.*']
     host_interfaces = %x( VBoxManage list bridgedifs | grep ^Name ).gsub(/Name:\s+/, '').split("\n")
@@ -20,17 +20,17 @@ class Network < Component
       host_interfaces.find { |vm| vm =~ /#{Regexp.new(pi)}/ }
     }.compact[0]
 
-    $vagrant.vm.network :public_network, bridge: network_interface_to_use #, adapter: "1"
+    $vagrant.vm.network :public_network, bridge: network_interface_to_use, adapter: 2
     if @cnf.fix_routing
       routing
     end
   end
 
-  def network_private
+  def network_private(adapter = 2)
     if !@cnf.ip
-      $vagrant.vm.network :private_network, type: 'dhcp'
+      $vagrant.vm.network :private_network, type: 'dhcp', adapter: adapter
     else
-      $vagrant.vm.network :private_network, ip: @cnf.ip
+      $vagrant.vm.network :private_network, ip: @cnf.ip, adapter: adapter
     end
   end
 
