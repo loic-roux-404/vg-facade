@@ -13,7 +13,8 @@ class Facade
     Provider: [:project_name],
     Network: [:domain],
     Ansible: [:git],
-    Fs: [:paths]
+    Fs: [:paths],
+    Hooks: [:hooks]
   }
 
   # Passing to each module vagrant object and part of the config struct
@@ -25,7 +26,7 @@ class Facade
     COMPONENT_CONFIGS.each do |plugin, cnfs|
       require_relative "components/#{plugin.downcase}"
       # Dependency injection system
-      configs_arg = [c.get(plugin.downcase)]
+      configs_arg = [c.get(cnfs ? plugin.downcase : nil)]
       cnfs ? cnfs.each { |param| configs_arg.push(c.get(param)) } : nil
       Object.const_get(plugin).new(*configs_arg)
     end

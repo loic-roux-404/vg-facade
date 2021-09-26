@@ -22,13 +22,13 @@ HELPER
   # Request a config by index
   def get(index = '')
     begin
-      if !@config[index.to_s]
-        gen_base(@config).to_struct
-      elsif !@config[index.to_s].is_a?(Hash)
-        @config[index.to_s]
-      else
-        @config[index.to_s].to_struct
-      end
+      return gen_base(@config).to_struct if not index
+
+      return nil if !@config[index.to_s]
+
+      return @config[index.to_s] if !@config[index.to_s].is_a?(Hash)
+
+      return @config[index.to_s].to_struct
     rescue ArgumentError => e
       raise StandardError.new "Vm probabbly not correctly linked"
     end
