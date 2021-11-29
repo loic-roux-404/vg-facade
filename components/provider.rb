@@ -6,6 +6,7 @@ class Provider < Component
     super(cnf)
 
     ENV['VAGRANT_DEFAULT_PROVIDER'] = cnf.type
+    self.send('req_'+type)
     self.dispatch(cnf.type)
   end
 
@@ -27,7 +28,23 @@ class Provider < Component
   end
 
   def provider_vmware
-    non_supported
+    $vagrant.vm.provider 'vmware_desktop' do |v|
+      @cnf.opts.each do |attr_name, attr_value|
+        v[attr_name] = attr_value
+        if attr_name == 'allowlist_verified'
+          v[attr_name] = @cnf.opts.allowlist_verified, :disable_warning => true
+        end
+        if attr_name == 'vmx'
+          attr_value.each do |k, v|
+            v.vmx[k] = v
+          end
+        end
+      end
+    end
+  end
+
+  def req_vmware
+    system('vagrant plugin install vagrant-vmware-desktop')
   end
 
   def provider_parallels
@@ -46,6 +63,7 @@ class Provider < Component
         'missing'
       )
     end
+    self.req_vmware
     # Set @valid to true (component is ok)
     return true
   end

@@ -7,6 +7,12 @@
 - `vagrant`
 - `ruby` (>= 2.3)
 
+#### Compatibility
+
+- vmware
+- virtualbox
+- [ ] libvirt
+
 ### Vagrant plugin Context
 
 This plugin is a **facade** aimed at setting easily a virtual vagrant environment
@@ -88,23 +94,47 @@ fs:
       - .vscode/
 
 provider:
-  type: virtualbox # Only Virtualbox available for now
+  type: virtualbox
   # Refer to Virtualbox original documentation or `VBoxManage --help `
   # define parameter to the VBoxManage command used by vagrant
   # Params are defined in the config.json file with name=param pair
   # We use this syntax sugar to loop and create dynamic virtualbox vm settings
   # By default vm is modified to 1024Mo RAM & 2 CPU's
-opts:
-  memory: 2048
-  cpus: 2
-  ioapic: on
-  # Others settings example
-  cpuexecutioncap: 80
-  natdnsproxy1: on
-  natdnshostresolver1: on
-  nictrace1: on
-  nictracefile1: .vagrant/dump.pcap
-  cableconnected1: on
+  opts:
+    memory: 2048
+    cpus: 2
+    ioapic: on
+    # Others settings example
+    cpuexecutioncap: 80
+    natdnsproxy1: on
+    natdnshostresolver1: on
+    nictrace1: on
+    nictracefile1: .vagrant/dump.pcap
+    cableconnected1: on
+
+```
+
+**For vmware :**
+
+```yaml
+provider:
+  type: vmware
+  opts:
+    allowlist_verified: true
+    base_address: ~
+    base_mac: ~
+    enable_vmrun_ip_lookup: true
+    functional_hgfs: false
+    gui: false
+    linked_clone : true
+    nat_device: ~ # fallback to vmnet8
+    port_forward_network_pause: 0
+    ssh_info_public: false
+    unmount_default_hgfs: false
+    utility_port: 9922
+    utility_certificate_path: ""
+    verify_vmnet: true
+    vmx: {}
 
 ```
 

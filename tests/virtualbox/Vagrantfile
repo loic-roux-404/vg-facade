@@ -1,0 +1,5 @@
+require_relative '../facade'
+
+Vagrant.configure('2') do |vagrant|
+  Facade.new(vagrant, __dir__)
+end
