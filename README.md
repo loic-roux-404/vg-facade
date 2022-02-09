@@ -1,6 +1,11 @@
 
 #### Vagrant facade
 
+## Roadmap
+
+- [ ] Tests vagrant file with Rake
+- [ ] Libvirt support (Mac ARM/AMD64 / Linux AMD64)
+
 #### Recommanded in machine to work perfectly
 
 - `python3`
@@ -119,6 +124,7 @@ provider:
 ```yaml
 provider:
   type: vmware
+  utility: false # recommanded
   opts:
     allowlist_verified: true
     base_address: ~
@@ -139,6 +145,17 @@ provider:
 ```
 
 ## Contribute
+
+#### Test requirements
+
+- [install rvm](https://rvm.io/rvm/install)
+- `rvm install 2.6`
+- `gem install vg-facade`
+- `vagrant plugin install vg-facade-*.gem`
+
+#### Common isues
+
+- solargraph language server on mac os : `sudo gem install solargraph`
 
 #### Error Handling
 

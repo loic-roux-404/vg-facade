@@ -1,0 +1,1 @@
+{"dependencies":[["vg-facade",["= 0.1.0"]]],"checksum":"52219f803d309b450db0246daca45c5850a2f5776d5de972e9c0de7077239b59","vagrant_version":"2.2.19"}

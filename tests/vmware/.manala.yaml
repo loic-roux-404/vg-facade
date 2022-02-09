@@ -1,59 +1,60 @@
-domain: localhost # format : domain.tld (landrush used)
-box: loic-roux-404/deb64-buster # Vagrant cloud box
-vb_guest_update: false # Update VirtualBox Guest Additions (for shared folders)
-box_update: false # Update box from vagrant cloud
-box_version: null # Choose a valid box version
-git:
-  org: null # provide an username to clone your playbook
-  provider: https://github.com # can be https://gitlab.com
+vagrant:
+  domain: localhost # format : domain.tld (landrush used)
+  box: loic-roux-404/deb64-buster # Vagrant cloud box
+  vb_guest_update: false # Update VirtualBox Guest Additions (for shared folders)
+  box_update: false # Update box from vagrant cloud
+  box_version: null # Choose a valid box version
+  git:
+    org: null # provide an username to clone your playbook
+    provider: https://github.com # can be https://gitlab.com
 
-paths:
-  web: null # not used for now
-  host: ./ # Project path on your machine (used by shared folders)
-  guest: /vagrant # Project path on guest machine (used by shared folders)
+  paths:
+    web: null # not used for now
+    host: ./ # Project path on your machine (used by shared folders)
+    guest: /vagrant # Project path on guest machine (used by shared folders)
 
-network:
-  ip: 192.168.33.10 #NEED TO ADAPT TO YOUR CONFIG
-  type: private # Available public private (check vagrant doc)
-  dns: true
-  # Specify object of type for each port
-  # {
-  #    guest: 80 # (required)
-  #    host: 8080 # (required)
-  #    auto_correct: true # (optional)
-  #    disabled: false (optional)
-  # }
-  ports: []
-  # NOT TESTED
-  # add cert in your machine to enable ssl
-  ssl:
-    cert: null # cert filename
-    path: /etc/ssl # cert path in guest
+  network:
+    ip: 192.168.33.10 #NEED TO ADAPT TO YOUR CONFIG
+    type: private # Available public private (check vagrant doc)
+    dns: true
+    # Specify object of type for each port
+    # {
+    #    guest: 80 # (required)
+    #    host: 8080 # (required)
+    #    auto_correct: true # (optional)
+    #    disabled: false (optional)
+    # }
+    ports: []
+    # NOT TESTED
+    # add cert in your machine to enable ssl
+    ssl:
+      cert: null # cert filename
+      path: /etc/ssl # cert path in guest
 
-ansible:
-  disabled: false
-  playbook: null # git repository name
-  inventory: null # Choose inventory (ex : dev prod staging)
-  # AVAILABLE :
-  # - worker (see script header for playbook-worker.sh)
-  # - classic (need ansible on your machine)
-  # - local (need ansible on guest machine)
-  type: local
-  sub_playbook: site.yml # Execute another file under playbook root instead of default site.yml
-  vars: # extra_vars for ansible
-    keyboard_mac: false
+  ansible:
+    disabled: false
+    playbook: null # git repository name
+    inventory: null # Choose inventory (ex : dev prod staging)
+    # AVAILABLE :
+    # - worker (see script header for playbook-worker.sh)
+    # - classic (need ansible on your machine)
+    # - local (need ansible on guest machine)
+    type: local
+    sub_playbook: site.yml # Execute another file under playbook root instead of default site.yml
+    vars: # extra_vars for ansible
+      keyboard_mac: false
 
-fs:
-  type: rsync # AVAILABLE : nfs smb vbox (need vb_guest_update = true)
-  opts:
-    auto: true # watch enable for rsync
-    disabled: true # for all
-    ignored: # ignored files in rsync
-      - /**/.DS_Store
-      - .git
-      - .vagrant
-      - .idea/
-      - .vscode/
+  fs:
+    type: rsync # AVAILABLE : nfs smb vbox (need vb_guest_update = true)
+    opts:
+      auto: true # watch enable for rsync
+      disabled: true # for all
+      ignored: # ignored files in rsync
+        - /**/.DS_Store
+        - .git
+        - .vagrant
+        - .idea/
+        - .vscode/
 
-provider:
-  type: vmware
+  provider:
+    type: vmware

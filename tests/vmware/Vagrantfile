@@ -1,4 +1,4 @@
-require_relative '../facade'
+require 'vg-facade'
 
 Vagrant.configure('2') do |vagrant|
   Facade.new(vagrant, __dir__)

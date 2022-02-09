@@ -1,5 +1,9 @@
+require_relative '../lib/system'
+
 # Vm provider component
 class Provider < Component
+
+  utility_bin = 'vagrant-vmware-utility'
 
   def initialize(cnf, project_name = '')
     @name = project_name
@@ -28,11 +32,16 @@ class Provider < Component
   end
 
   def provider_vmware
+    # TODO fix network errors with private nets and port forwarding
+    # TODO use vmware-utility, no choice
+    # TODO use utility to fix port forwarding
+    # https://www.vagrantup.com/vmware/downloads
+    # https://www.vagrantup.com/docs/providers/vmware/vagrant-vmware-utility
     $vagrant.vm.provider 'vmware_desktop' do |v|
       @cnf.opts.each do |attr_name, attr_value|
         v[attr_name] = attr_value
         if attr_name == 'allowlist_verified'
-          v[attr_name] = @cnf.opts.allowlist_verified, :disable_warning => true
+          v[attr_name] = @cnf.opts.allowlist_verified#, :disable_warning => true
         end
         if attr_name == 'vmx'
           attr_value.each do |k, v|
@@ -45,6 +54,12 @@ class Provider < Component
 
   def req_vmware
     system('vagrant plugin install vagrant-vmware-desktop')
+    if Vagrant::Util::Platform.mac? then
+      command('brew') ? system("brew install #{utility_bin}") : StandardError.new("Need brew to install #{utility_bin}")
+      system("/opt/vagrant-vmware-desktop/bin/vagrant-vmware-utility service install")
+    elsif Vagrant::Util::Platform.mac?
+      puts "vagrant-vmware-utility should be necessary <https://www.vagrantup.com/vmware/downloads>"
+    end
   end
 
   def provider_parallels

@@ -1,3 +1,4 @@
+require_relative '../collection'
 require 'yaml'
 
 # Class Config : interface with config files
@@ -12,10 +13,11 @@ class Config
 #{CONFIG_OBJECT_KEY}:
 HELPER
 
-  def initialize
-    @default = YAML.load_file($__dir__+ DEFAULT_CONFIG)[CONFIG_OBJECT_KEY]
-    self.check_user_cnf
-    @user_config = YAML.load_file($__dir__ + USER_CONFIG)
+  def initialize(config_factory)
+    @config = config_factory ? config_factory : DEFAULT_CONFIG
+    self.check_confs_file
+    @default = YAML.load_file("#{$__dir__}#{@config}")[CONFIG_OBJECT_KEY]
+    @user_config = YAML.load_file("#{$__dir__}#{USER_CONFIG}") or self.get_empty_cnf
     @config = @default.deep_merge(@user_config)
   end
 
@@ -35,16 +37,16 @@ HELPER
   end
 
   # Create base from config.json root
-  def gen_base(config)
+  def gen_base(config_factory)
     res = {}
-    config.each do |key, value|
+    config_factory.each do |key, value|
       !value.is_a?(Hash) && !value.is_a?(Array) ? res[key] = value : nil
     end
     res
   end
 
   # Create missing user config if needed
-  def check_user_cnf
+  def check_confs_file
     begin
       File.read($__dir__ + USER_CONFIG)
     rescue StandardError
@@ -53,5 +55,18 @@ HELPER
       user_config_file.puts HELPER_MSG
       user_config_file.close
     end
+
+    begin
+      File.read($__dir__ + @config)
+    rescue IOError
+      raise ConfigError.new("Need to create a config file #{@config}")
+    end
+  end
+
+  def get_empty_cnf
+    res = {}
+    res[CONFIG_OBJECT_KEY] = {}
+
+    return res
   end
 end
