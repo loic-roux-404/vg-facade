@@ -9,6 +9,7 @@
 acceptance_config.yml
 boxes/*
 /.vagrant
+**/.vagrant
 
 # Bundler/Rubygems
 *.gem

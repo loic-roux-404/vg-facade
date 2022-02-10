@@ -1,4 +1,4 @@
-require_relative '../collection'
+require 'vg/collection'
 require 'yaml'
 
 # Class Config : interface with config files
@@ -13,8 +13,8 @@ class Config
 #{CONFIG_OBJECT_KEY}:
 HELPER
 
-  def initialize(config_factory)
-    @config = config_factory ? config_factory : DEFAULT_CONFIG
+  def initialize(config)
+    @config = config ? config : DEFAULT_CONFIG
     self.check_confs_file
     @default = YAML.load_file("#{$__dir__}#{@config}")[CONFIG_OBJECT_KEY]
     @user_config = YAML.load_file("#{$__dir__}#{USER_CONFIG}") or self.get_empty_cnf
@@ -37,9 +37,9 @@ HELPER
   end
 
   # Create base from config.json root
-  def gen_base(config_factory)
+  def gen_base(config)
     res = {}
-    config_factory.each do |key, value|
+    config.each do |key, value|
       !value.is_a?(Hash) && !value.is_a?(Array) ? res[key] = value : nil
     end
     res
@@ -59,7 +59,7 @@ HELPER
     begin
       File.read($__dir__ + @config)
     rescue IOError
-      raise ConfigError.new("Need to create a config file #{@config}")
+      raise ConfigError.new "Need to create a config file #{@config}"
     end
   end
 

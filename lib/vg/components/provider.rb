@@ -1,4 +1,4 @@
-require_relative '../lib/system'
+require 'vg/system'
 
 # Vm provider component
 class Provider < Component

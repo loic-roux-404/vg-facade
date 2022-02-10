@@ -1,15 +1,15 @@
 require "vg/facade/version"
 # Include ruby tweaks
-require_relative 'collection'
+require 'vg/collection'
 # Models
-require_relative "model/config"
-require_relative "model/component"
-require_relative "model/errors"
+require "vg/model/config"
+require "vg/model/component"
+require "vg/model/errors"
 
 module Vg
   module Facade
         # Singleton to dispatch all plugin actions
-    class Facade < Vagrant.plugin("2")
+    class Bootstrap < Vagrant.plugin("2")
       name "vg-facade"
       # Map Components more configs to components
       COMPONENT_CONFIGS = {

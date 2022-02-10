@@ -1,5 +1,5 @@
-require 'vg-facade'
+require 'vg/facade'
 
 Vagrant.configure('2') do |vagrant|
-  Facade.new(vagrant, __dir__)
+  Vg::Facade::Bootstrap.new(vagrant, __dir__)
 end

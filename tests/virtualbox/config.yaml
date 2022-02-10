@@ -1,0 +1,4 @@
+# Override original config in /.manala.yaml
+# Useful to pass ansible extra vars or add RAM to VM
+---
+vagrant:
